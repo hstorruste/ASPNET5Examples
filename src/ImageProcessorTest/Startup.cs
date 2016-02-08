@@ -52,6 +52,7 @@ namespace ImageProcessorTest
             services.AddScoped<IPictureBLL, PictureBLL>();
             services.AddScoped<IDbPictures, DbPicture>();
 
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
