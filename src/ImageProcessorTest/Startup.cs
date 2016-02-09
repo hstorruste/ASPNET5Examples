@@ -11,6 +11,8 @@ using DAL;
 using Microsoft.Data.Entity;
 using Microsoft.Extensions.Logging;
 using BLL;
+using Swashbuckle.Application;
+using Swashbuckle.SwaggerGen;
 
 namespace ImageProcessorTest
 {
@@ -48,6 +50,21 @@ namespace ImageProcessorTest
                 .AddSqlServer()
                 .AddDbContext<ImageTestContext>(options => options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
+            //services.ConfigureSwaggerDocument(option =>
+            //{
+            //    option.SingleApiVersion(new Info
+            //    {
+            //        Version = "v1",
+            //        Title = "Picture service API",
+            //        Description = "Add, resize and serves pictures"
+            //    });
+            //});
+
+            //services.ConfigureSwaggerSchema(options =>
+            //{
+            //    options.DescribeAllEnumsAsStrings = true;
+            //});
+
             services.AddMvc();
             services.AddScoped<IPictureBLL, PictureBLL>();
             services.AddScoped<IDbPictures, DbPicture>();
@@ -74,7 +91,14 @@ namespace ImageProcessorTest
 
             app.UseStaticFiles();
 
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name:"default",
+                    template: "{controller=Picture}/{action=Get}/{id?}");
+            });
+
+            app.UseSwaggerUi();
 
         }
 

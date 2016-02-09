@@ -16,7 +16,7 @@ namespace DAL
         public ImageTestContext(DbContextOptions options)
             : base(options)
         {
-
+            Database.EnsureCreated();
         }
 
         public DbSet<Pictures> Pictures { get; set;}

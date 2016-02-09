@@ -8,6 +8,12 @@ namespace DAL
 {
     public class DbPicture : IDbPictures
     {
+        private ImageTestContext db;
+
+        public DbPicture(ImageTestContext context)
+        {
+            db = context;
+        }
         public Picture addPicture(Picture picture)
         {
             throw new NotImplementedException();
