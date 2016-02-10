@@ -14,6 +14,7 @@ namespace DAL
         {
             db = context;
         }
+
         public Picture addPicture(Picture picture)
         {
             throw new NotImplementedException();
