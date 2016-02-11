@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using BLL;
 using Model;
+using Microsoft.AspNet.Mvc.Filters;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,6 +15,7 @@ namespace ImageProcessorTest.Controllers
     public class PictureController : Controller
     {
         private IPictureBLL _pictureRepo;
+
 
         public PictureController(IPictureBLL pictureRepo)
         {
@@ -52,4 +54,6 @@ namespace ImageProcessorTest.Controllers
         {
         }
     }
+
+   
 }

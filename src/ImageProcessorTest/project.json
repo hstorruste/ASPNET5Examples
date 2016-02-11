@@ -22,7 +22,6 @@
     "Model": "1.0.0-*",
     "Swashbuckle.SwaggerUi": "6.0.0-rc1-final",
     "Swashbuckle.SwaggerGen": "6.0.0-rc1-final",
-    "angularjs": "1.5.0",
     "Microsoft.AspNet.Diagnostics.Entity": "7.0.0-rc1-final"
   },
 
