@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using BLL;
 using Swashbuckle.Application;
 using Swashbuckle.SwaggerGen;
+using Swashbuckle;
 
 namespace ImageProcessorTest
 {
@@ -50,20 +51,25 @@ namespace ImageProcessorTest
                 .AddSqlServer()
                 .AddDbContext<ImageTestContext>(options => options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
-            //services.ConfigureSwaggerDocument(option =>
+            //var pathToDoc = Configuration["Swagger:Path"];
+            //services.ConfigureSwaggerDocument(options =>
             //{
-            //    option.SingleApiVersion(new Info
+            //    options.SingleApiVersion(new Info
             //    {
             //        Version = "v1",
             //        Title = "Picture service API",
             //        Description = "Add, resize and serves pictures"
             //    });
+            //    options.OperationFilter(new Swashbuckle.SwaggerGen.XmlComments.ApplyXmlActionComments(pathToDoc));
             //});
 
             //services.ConfigureSwaggerSchema(options =>
             //{
             //    options.DescribeAllEnumsAsStrings = true;
+            //    options.ModelFilter(new Swashbuckle.SwaggerGen.XmlComments.ApplyXmlTypeComments(pathToDoc));
             //});
+
+            services.AddSwaggerGen();
 
             services.AddMvc();
             services.AddScoped<IPictureBLL, PictureBLL>();
@@ -91,7 +97,7 @@ namespace ImageProcessorTest
             app.UseIISPlatformHandler();
 
             app.UseStaticFiles();
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -99,6 +105,7 @@ namespace ImageProcessorTest
                     template: "{controller=Picture}/{action=Get}/{id?}");
             });
 
+            app.UseSwaggerGen();
             app.UseSwaggerUi();
 
         }

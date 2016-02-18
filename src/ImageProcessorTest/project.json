@@ -22,6 +22,8 @@
     "Model": "1.0.0-*",
     "Swashbuckle.SwaggerUi": "6.0.0-rc1-final",
     "Swashbuckle.SwaggerGen": "6.0.0-rc1-final",
+    "Swashbuckle": "6.0.0-rc1-final",
+ 
     "Microsoft.AspNet.Diagnostics.Entity": "7.0.0-rc1-final"
   },
 

@@ -6,6 +6,8 @@ using Microsoft.AspNet.Mvc;
 using BLL;
 using Model;
 using Microsoft.AspNet.Mvc.Filters;
+using Swashbuckle.SwaggerGen.Annotations;
+using System.Net;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,6 +26,7 @@ namespace ImageProcessorTest.Controllers
 
         // GET: api/values
         [HttpGet]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(List<Picture>))]
         public List<Picture> Get()
         {
             return _pictureRepo.getPictures();
