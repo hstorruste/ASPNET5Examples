@@ -1,13 +1,15 @@
 {
-  "version": "1.0.0-*",
+  "commands": {
+    "web": "Microsoft.AspNet.Server.Kestrel"
+  },
   "compilationOptions": {
     "emitEntryPoint": true
   },
-  "userSecretsId": "1234",
-
   "dependencies": {
     "BLL": "1.0.0-*",
     "EntityFramework.MicrosoftSqlServer": "7.0.0-rc1-final",
+    "Microsoft.AspNet.Diagnostics": "1.0.0-*",
+    "Microsoft.AspNet.Diagnostics.Entity": "7.0.0-rc1-final",
     "Microsoft.AspNet.IISPlatformHandler": "1.0.0-rc1-final",
     "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
     "Microsoft.AspNet.Server.Kestrel": "1.0.0-rc1-final",
@@ -18,31 +20,23 @@
     "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
     "Microsoft.Extensions.Logging.Console": "1.0.0-rc1-final",
     "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final",
-    "Microsoft.AspNet.Diagnostics": "1.0.0-*",
     "Model": "1.0.0-*",
     "Swashbuckle": "6.0.0-rc1-final",
-    "Swashbuckle.SwaggerUi": "6.0.0-rc1-final",
     "Swashbuckle.SwaggerGen": "6.0.0-rc1-final",
-    "Swashbuckle": "6.0.0-rc1-final",
- 
-    "Microsoft.AspNet.Diagnostics.Entity": "7.0.0-rc1-final"
+    "Swashbuckle.SwaggerUi": "6.0.0-rc1-final"
   },
-
-  "commands": {
-    "web": "Microsoft.AspNet.Server.Kestrel"
-  },
-
-  "frameworks": {
-    "dnx451": { },
-    "dnxcore50": { }
-  },
-
   "exclude": [
     "wwwroot",
     "node_modules"
   ],
+  "frameworks": {
+    "dnx451": { },
+    "dnxcore50": { }
+  },
   "publishExclude": [
     "**.user",
     "**.vspscc"
-  ]
+  ],
+  "userSecretsId": "1234",
+  "version": "1.0.0-*"
 }
