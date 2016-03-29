@@ -16,11 +16,27 @@ var LevelComponent = (function () {
             title: "Level 1",
             seconds: 60
         };
+        this.timeStarted = false;
     }
+    LevelComponent.prototype.ngOnInit = function () {
+        this.startTime();
+    };
+    LevelComponent.prototype.startTime = function () {
+        var _this = this;
+        if (!this.timeStarted) {
+            var clock = setInterval(function () {
+                _this.level.seconds--;
+                if (_this.level.seconds == 0) {
+                    clearInterval(clock);
+                }
+            }, 1000);
+            this.timeStarted = true;
+        }
+    };
     LevelComponent = __decorate([
         core_1.Component({
             selector: "level",
-            template: "\n        <h1> {{level.title}}</h1>\n\n    ",
+            template: "\n        <h1>{{level.title}}</h1>\n        <p>Time left: <b>{{level.seconds}}</b></p>\n        \n    ",
         }), 
         __metadata('design:paramtypes', [])
     ], LevelComponent);
