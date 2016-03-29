@@ -18,42 +18,47 @@ namespace BLL
 
         public void AddToScoreboard(string name, int score)
         {
-            throw new NotImplementedException();
+            _bugsRepo.AddToScoreboard(name, score);
         }
 
         public List<Level> GetAllLevels()
         {
-            throw new NotImplementedException();
+            return _bugsRepo.GetAllLevels();
         }
 
         public List<Bug> GetBugList()
         {
-            throw new NotImplementedException();
+            return _bugsRepo.GetBugList();
         }
 
         public List<Bug> GetBugListFromLevel(int levelId)
         {
-            throw new NotImplementedException();
+            return _bugsRepo.GetBugListFromLevel(levelId);
         }
 
         public Level GetLevel(int id)
         {
-            throw new NotImplementedException();
+            return _bugsRepo.GetLevel(id);
         }
 
         public Level GetLevelWithBugs(int id)
         {
-            throw new NotImplementedException();
+            return _bugsRepo.GetLevelWithBugs(id);
         }
 
         public List<Scoreboard> GetScoreBoard()
         {
-            throw new NotImplementedException();
+            return _bugsRepo.GetScoreBoard();
         }
 
         public bool ReachedTheScoreboard(int score)
         {
-            throw new NotImplementedException();
+            var board = _bugsRepo.GetScoreBoard();
+            var sortedBoard = board.OrderByDescending(e => e.score);
+            if(sortedBoard.ElementAt(9).score < score) {
+                return true;
+            }
+            return false;
         }
     }
 }
