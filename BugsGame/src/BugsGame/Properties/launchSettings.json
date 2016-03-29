@@ -11,6 +11,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
+      "launchUrl": "http://localhost:25521/Index.html",
       "environmentVariables": {
         "Hosting:Environment": "Development"
       }
