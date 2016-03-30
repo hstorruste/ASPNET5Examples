@@ -9,6 +9,7 @@ using BLL;
 using DAL;
 using Model;
 using System.Collections;
+using Microsoft.Extensions.PlatformAbstractions;
 
 namespace UnitTest
 {
@@ -16,9 +17,9 @@ namespace UnitTest
     {
         PictureController controller;
 
-        public PictureControllerTest()
+        public PictureControllerTest(IApplicationEnvironment hostingEnvironment)
         {
-            controller = new PictureController(new PictureBLL(new DbPictureStub()));
+            controller = new PictureController(new PictureBLL(new DbPictureStub()), hostingEnvironment);
         }
         [Fact]
         public void Get_Pictures_Ok()

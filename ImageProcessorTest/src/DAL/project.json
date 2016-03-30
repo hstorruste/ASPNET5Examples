@@ -6,7 +6,11 @@
   "projectUrl": "",
   "licenseUrl": "",
   "frameworks": {
-    "net451": { },
+    "net451": {
+      "dependencies": {
+        "ImageProcessor": "2.3.3"
+      }
+    },
     "dotnet5.4": {
       "dependencies": {
         "Microsoft.CSharp": "4.0.1-beta-23516",
@@ -19,6 +23,7 @@
   },
   "dependencies": {
     "Model": "1.0.0-*",
-    "Microsoft.AspNet.Identity.EntityFramework": "3.0.0-rc1-final"
+    "Microsoft.AspNet.Identity.EntityFramework": "3.0.0-rc1-final",
+    "ImageProcessor.Web.Config": "2.2.5"
   }
 }

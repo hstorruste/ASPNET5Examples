@@ -8,6 +8,9 @@ using Model;
 using Microsoft.AspNet.Mvc.Filters;
 using Swashbuckle.SwaggerGen.Annotations;
 using System.Net;
+using Microsoft.AspNet.Http;
+using Microsoft.Net.Http.Headers;
+using Microsoft.Extensions.PlatformAbstractions;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,11 +20,12 @@ namespace ImageProcessorTest.Controllers
     public class PictureController : Controller
     {
         private IPictureBLL _pictureRepo;
+        private IApplicationEnvironment _hostingEnvironment;
 
-
-        public PictureController(IPictureBLL pictureRepo)
+        public PictureController(IPictureBLL pictureRepo, IApplicationEnvironment hostingEnvironment)
         {
             _pictureRepo = pictureRepo;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: api/values
@@ -40,9 +44,13 @@ namespace ImageProcessorTest.Controllers
         }
 
         // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
+        [HttpPost("Picture")]
+        public IActionResult PicturePost([FromBody]IFormFile value) {
+
+
+            _pictureRepo.uploadPicture(value, _hostingEnvironment.ApplicationBasePath);
+
+            return null;
         }
 
         // PUT api/values/5

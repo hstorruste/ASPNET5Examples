@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using Microsoft.AspNet.Http;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace BLL
         Picture addPicture(Picture picture);
         Picture updatePicture(Picture picture);
         Picture deletePicture(int id);
+        Task<bool> uploadPicture(IFormFile value, string basePath);
     }
 }
