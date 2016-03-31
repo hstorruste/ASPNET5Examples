@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="libs/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#lastOpp").click(uploadPicture);
+        });
+        var file;
+        $("#file").on('change', prepareUpload);
+
+        function prepareUpload(event) {
+            file = event.target.files;
+        }
+
+        function uploadPicture(event) {
+            var data = new FormData();
+            $.each(file, function (key, value) {
+                data.append(key, value);
+            });
+
+            $.ajax({
+                url: './api/Picture/Picture',
+                type: 'POST',
+                data: data,
+                cach: false,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.log("Suksess");
+                },
+                error: function (err) {
+                    console.log("error")
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>ImageProcessor - test</h1>
+    <h3>Dette er en test for å laste opp bilder</h3>
+
+    <label for="file">Velg fil:</label>
+    <input type="file" id="file"/>
+    <button id="lastOpp">Last opp</button>
+</body>
+</html>
