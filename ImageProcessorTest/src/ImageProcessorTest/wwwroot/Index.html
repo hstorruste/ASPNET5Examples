@@ -7,33 +7,36 @@
     <script type="text/javascript">
         $(document).ready(function(){
             $("#lastOpp").click(uploadPicture);
+            $("#file").change(prepareUpload);
         });
-        var file;
-        $("#file").on('change', prepareUpload);
+        var files;
+        var formData = new FormData();
+        var value;
 
         function prepareUpload(event) {
-            file = event.target.files;
+            files = event.target.files;
+            console.log("prepering" + file);
         }
 
         function uploadPicture(event) {
-            var data = new FormData();
-            $.each(file, function (key, value) {
-                data.append(key, value);
-            });
-
+            
+            //$.each(file, function (key, value) {
+            //    window.formData.append(key, value);
+            //    window.value = value;
+            //});
+            formData.append('value', files[0]);
+            
             $.ajax({
                 url: './api/Picture/Picture',
                 type: 'POST',
-                data: data,
-                cach: false,
-                dataType: 'json',
+                data: formData,
                 processData: false,
                 contentType: false,
                 success: function (data) {
                     console.log("Suksess");
                 },
                 error: function (err) {
-                    console.log("error")
+                    console.log("error" + err.responseText)
                 }
             });
         }

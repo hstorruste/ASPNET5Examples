@@ -48,17 +48,28 @@ namespace BLL
             return _pictureRepo.updatePicture(picture);
         }
 
-        public async Task<bool> uploadPicture(IFormFile value, string basePath) {
-            var fileName = ContentDispositionHeaderValue
-                .Parse(value.ContentDisposition)
-                .FileName
-                .Trim('"');// FileName returns "fileName.ext"(with double quotes) in beta 3
+        public async Task<bool> uploadPicture(ICollection<IFormFile> files, string basePath) {
+
+            foreach (var value in files)
+            {
+                var fileName = ContentDispositionHeaderValue
+                    .Parse(value.ContentDisposition)
+                    .FileName
+                    .Trim('"');// FileName returns "fileName.ext"(with double quotes) in beta 3
 
 
                 var filePath = basePath + "\\wwwroot\\Content\\Pictures\\" + fileName;
-                await value.SaveAsAsync(filePath);
 
-            throw new NotImplementedException();
+                try
+                {
+                    await value.SaveAsAsync(filePath);
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

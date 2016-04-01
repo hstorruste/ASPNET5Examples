@@ -45,12 +45,16 @@ namespace ImageProcessorTest.Controllers
 
         // POST api/values
         [HttpPost("Picture")]
-        public IActionResult PicturePost([FromBody]IFormFile value) {
+        public async Task<IActionResult> PicturePost(ICollection<IFormFile> value) {
 
-
-            _pictureRepo.uploadPicture(value, _hostingEnvironment.ApplicationBasePath);
-
-            return null;
+            try {
+                await _pictureRepo.uploadPicture(value, _hostingEnvironment.ApplicationBasePath);
+            }
+            catch(Exception e)
+            {
+                return new HttpStatusCodeResult(500);
+            }
+            return new ObjectResult("Ok");
         }
 
         // PUT api/values/5

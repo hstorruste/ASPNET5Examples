@@ -15,6 +15,6 @@ namespace BLL
         Picture addPicture(Picture picture);
         Picture updatePicture(Picture picture);
         Picture deletePicture(int id);
-        Task<bool> uploadPicture(IFormFile value, string basePath);
+        Task<bool> uploadPicture(ICollection<IFormFile> files, string basePath);
     }
 }
