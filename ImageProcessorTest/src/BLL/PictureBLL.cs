@@ -12,10 +12,12 @@ namespace BLL
     public class PictureBLL : IPictureBLL
     {
         private IDbPictures _pictureRepo;
+        private FileHandler _fileHandler;
 
-        public PictureBLL(IDbPictures pictureRepo)
+        public PictureBLL(IDbPictures pictureRepo, FileHandler fileHandler)
         {
             _pictureRepo = pictureRepo;
+            _fileHandler = fileHandler;
         }
 
         public Picture addPicture(Picture picture)
@@ -50,26 +52,8 @@ namespace BLL
 
         public async Task<bool> uploadPicture(ICollection<IFormFile> files, string basePath) {
 
-            foreach (var value in files)
-            {
-                var fileName = ContentDispositionHeaderValue
-                    .Parse(value.ContentDisposition)
-                    .FileName
-                    .Trim('"');// FileName returns "fileName.ext"(with double quotes) in beta 3
-
-
-                var filePath = basePath + "\\wwwroot\\Content\\Pictures\\" + fileName;
-
-                try
-                {
-                    await value.SaveAsAsync(filePath);
-                }
-                catch (Exception e)
-                {
-                    return false;
-                }
-            }
-            return true;
+            _fileHandler.saveSmallPicture(files, basePath);
+            return await _fileHandler.savePicture(files, basePath);
         }
     }
 }

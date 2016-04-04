@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "description": "DAL Class Library",
   "authors": [ "Hallbjørn" ],
@@ -6,13 +6,10 @@
   "projectUrl": "",
   "licenseUrl": "",
   "frameworks": {
-    "net451": {
+    
+    "dotnet5.5": {
       "dependencies": {
-        "ImageProcessor": "2.3.3"
-      }
-    },
-    "dotnet5.4": {
-      "dependencies": {
+        "ImageProcessorCore": "1.0.0-alpha-751",
         "Microsoft.CSharp": "4.0.1-beta-23516",
         "System.Collections": "4.0.11-beta-23516",
         "System.Linq": "4.0.1-beta-23516",
@@ -24,6 +21,6 @@
   "dependencies": {
     "Model": "1.0.0-*",
     "Microsoft.AspNet.Identity.EntityFramework": "3.0.0-rc1-final",
-    "ImageProcessor.Web.Config": "2.2.5"
+    "ImageProcessor.Web.Config": "2.2.5",
   }
 }

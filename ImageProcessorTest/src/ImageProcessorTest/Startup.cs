@@ -74,6 +74,7 @@ namespace ImageProcessorTest
             services.AddMvc();
             services.AddScoped<IPictureBLL, PictureBLL>();
             services.AddScoped<IDbPictures, DbPicture>();
+            services.AddScoped<FileHandler, FileHandler>();
 
 
         }

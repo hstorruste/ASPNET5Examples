@@ -10,21 +10,18 @@
             $("#file").change(prepareUpload);
         });
         var files;
-        var formData = new FormData();
-        var value;
-
+        
         function prepareUpload(event) {
             files = event.target.files;
-            console.log("prepering" + file);
+            console.log("prepering" + files);
         }
 
         function uploadPicture(event) {
             
-            //$.each(file, function (key, value) {
-            //    window.formData.append(key, value);
-            //    window.value = value;
-            //});
-            formData.append('value', files[0]);
+            var formData = new FormData();
+            $.each(files, function (key, value) {
+                    formData.append('value', value);
+            });
             
             $.ajax({
                 url: './api/Picture/Picture',
@@ -34,9 +31,14 @@
                 contentType: false,
                 success: function (data) {
                     console.log("Suksess");
+                    $('#file').val("");
+                    $('#Result').css('color', 'black');
+                    $('#Result').text("Filen ble lastet opp");
                 },
                 error: function (err) {
                     console.log("error" + err.responseText)
+                    $('#Result').css('color', 'red');
+                    $('#Result').text("Det skjedde en feil");
                 }
             });
         }
@@ -49,5 +51,6 @@
     <label for="file">Velg fil:</label>
     <input type="file" id="file"/>
     <button id="lastOpp">Last opp</button>
+    <label id="Result"></label>
 </body>
 </html>
