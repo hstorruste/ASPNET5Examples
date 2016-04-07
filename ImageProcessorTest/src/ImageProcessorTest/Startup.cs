@@ -7,6 +7,8 @@ using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using DAL;
 using Microsoft.Data.Entity;
 using Microsoft.Extensions.Logging;
@@ -50,6 +52,7 @@ namespace ImageProcessorTest
             services.AddEntityFramework()
                 .AddSqlServer()
                 .AddDbContext<ImageTestContext>(options => options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
+            
 
             //var pathToDoc = Configuration["Swagger:Path"];
             //services.ConfigureSwaggerDocument(options =>
@@ -75,6 +78,10 @@ namespace ImageProcessorTest
             services.AddScoped<IPictureBLL, PictureBLL>();
             services.AddScoped<IDbPictures, DbPicture>();
             services.AddScoped<FileHandler, FileHandler>();
+            services.AddScoped(repo =>
+            {
+                return CloudStorageAccount.Parse(Configuration["Data:AzureWebJobsStorage:StorageConnectionString"]);
+            });
 
 
         }

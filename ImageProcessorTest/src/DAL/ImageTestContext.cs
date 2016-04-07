@@ -20,6 +20,7 @@ namespace DAL
         }
 
         public DbSet<Pictures> Pictures { get; set;}
+        public DbSet<Pages> Pages { get; set; }
 
     }
 

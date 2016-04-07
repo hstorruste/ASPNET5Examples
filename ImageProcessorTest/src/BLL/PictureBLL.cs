@@ -52,8 +52,11 @@ namespace BLL
 
         public async Task<bool> uploadPicture(ICollection<IFormFile> files, string basePath) {
 
-            _fileHandler.saveSmallPicture(files, basePath);
-            return await _fileHandler.savePicture(files, basePath);
+            //return await _fileHandler.saveSmallPicture(files, basePath);
+
+            //return await _fileHandler.savePicture(files, basePath);
+            await _fileHandler.saveImageToBlob(files);
+            return true;
         }
     }
 }

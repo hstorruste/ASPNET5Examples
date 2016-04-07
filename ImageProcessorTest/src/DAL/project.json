@@ -9,7 +9,7 @@
     
     "dotnet5.5": {
       "dependencies": {
-        "ImageProcessorCore": "1.0.0-alpha-751",
+        "ImageProcessorCore": "1.0.0-alpha-763",
         "Microsoft.CSharp": "4.0.1-beta-23516",
         "System.Collections": "4.0.11-beta-23516",
         "System.Linq": "4.0.1-beta-23516",
@@ -22,5 +22,7 @@
     "Model": "1.0.0-*",
     "Microsoft.AspNet.Identity.EntityFramework": "3.0.0-rc1-final",
     "ImageProcessor.Web.Config": "2.2.5",
+    "WindowsAzure.Storage": "6.2.2-preview",
+    "Microsoft.IdentityModel.Protocols": "2.0.0-rc1-211161024",
   }
 }
