@@ -10,25 +10,28 @@ using System.IO;
 using System.Threading.Tasks;
 using ImageProcessorCore.Samplers;
 using ImageProcessorCore.Formats;
+using Model;
+using System.Linq;
 
 namespace DAL
 {
     public class FileHandler
     {
-        CloudStorageAccount _storageAccount;
-        CloudBlobClient _blobClient;
-        CloudBlobContainer _container;
+        private CloudStorageAccount _storageAccount;
+        private CloudBlobClient _blobClient;
+        private CloudBlobContainer _container;
+        private ImageTestContext _db;
 
-        public FileHandler(CloudStorageAccount storageAccount)
+        public FileHandler(CloudStorageAccount storageAccount, ImageTestContext context)
         {
             // Retrieve storage account from connection string.
             _storageAccount = storageAccount;
-
             // Create the blob client.
             _blobClient = _storageAccount.CreateCloudBlobClient();
-
             // Retrieve reference to a previously created container.
             _container = _blobClient.GetContainerReference("pictures");
+
+            _db = context;
         }
         public async Task<bool> savePicture(ICollection<IFormFile> files, string basePath)
         {
@@ -99,12 +102,45 @@ namespace DAL
                     .FileName
                     .Trim('"');// FileName may return double quotes
                 CloudBlockBlob blockBlob = _container.GetBlockBlobReference(fileName);
+                
 
                 // Create or overwrite
                 using (var fileStream = file.OpenReadStream())
                 {
                     await blockBlob.UploadFromStreamAsync(fileStream);
+                    
                 }
+
+                try
+                {
+                    _db.Pictures.Add(new Pictures
+                    {
+                        Url = blockBlob.Uri.ToString()
+                    });
+                    _db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+        }
+
+        public Picture getPicture(int id)
+        {
+            var pic =  _db.Pictures.SingleOrDefault(p => p.Id == id);
+            if(pic == null)
+            {
+                return null;
+            }
+            else
+            {
+                return new Picture
+                {
+                    id = pic.Id,
+                    description = pic.Description,
+                    url = pic.Url
+                };
             }
         }
     }

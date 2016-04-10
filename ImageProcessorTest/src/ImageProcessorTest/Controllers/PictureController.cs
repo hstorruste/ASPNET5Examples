@@ -38,9 +38,10 @@ namespace ImageProcessorTest.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+
+            return new ObjectResult("value");
         }
 
         // POST api/values

@@ -37,15 +37,11 @@ namespace DAL
 
         public List<Picture> getPictures()
         {
-            return new List<Picture>()
-            {
-                new Picture
-                {
-                    id =1,
-                    url= "www.1.no",
-                    description = "Dette er en test!"
-                }
-            };
+            return db.Pictures.Select(p => new Picture {
+                id = p.Id,
+                description = p.Description,
+                url = p.Url
+            }).ToList();
         }
 
         public Picture updatePicture(Picture picture)

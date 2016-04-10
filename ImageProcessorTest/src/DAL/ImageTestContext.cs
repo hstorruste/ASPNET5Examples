@@ -20,7 +20,7 @@ namespace DAL
         }
 
         public DbSet<Pictures> Pictures { get; set;}
-        public DbSet<Pages> Pages { get; set; }
+        //public DbSet<Pages> Pages { get; set; }
 
     }
 
@@ -29,8 +29,8 @@ namespace DAL
         public int Id { get; set; }
         public string Url { get; set; }
         public string Description { get; set; }
-        [ForeignKey("Page")]
-        public int PagesId { get; set; }
+        //[ForeignKey("Page")]
+        //public int PagesId { get; set; }
 
         public virtual Pages Page { get; set; }
     }

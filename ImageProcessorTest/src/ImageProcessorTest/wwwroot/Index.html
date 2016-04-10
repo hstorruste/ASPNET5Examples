@@ -4,9 +4,11 @@
     <meta charset="utf-8" />
     <title></title>
     <script src="libs/jquery.min.js"></script>
+    <script src="libs/bootstrap.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $("#lastOpp").click(uploadPicture);
+            $("#getPics").click(getPictures);
             $("#file").change(prepareUpload);
         });
         var files;
@@ -17,7 +19,8 @@
         }
 
         function uploadPicture(event) {
-            
+            $(".progress").show();
+
             var formData = new FormData();
             $.each(files, function (key, value) {
                     formData.append('value', value);
@@ -34,25 +37,55 @@
                     $('#file').val("");
                     $('#Result').css('color', 'black');
                     $('#Result').text("Filen ble lastet opp");
+                    $(".progress").hide();
                 },
                 error: function (err) {
                     console.log("error" + err.responseText)
                     $('#Result').css('color', 'red');
                     $('#Result').text("Det skjedde en feil");
+                    $(".progress").hide();
                 }
             });
         }
+
+        function getPictures() {
+            $.getJSON("./api/Picture", function (data) {
+                $("#gallery").text("");
+                $.each(data, function (key, val) {
+                    $("#gallery").append("<div class='col-md-3'><img class='img-responsive' src='" + val.url + "'/><div>");
+                });
+
+            });
+        }
     </script>
+    <link href="style/bootstrap.css" rel="stylesheet" />
+    <link href="style/bootstrap-theme.css" rel="stylesheet" />
 </head>
 <body>
-    <h1>ImageProcessor - test</h1>
-    <h3>Dette er en test for å laste opp bilder</h3>
+    <div class="container">
+        <h1>ImageProcessor - test</h1>
+        <h3>Dette er en test for å laste opp bilder</h3>
+        <div class="row">
+            <input class="col-md-4" type="file" id="file" />
+            <button class="col-md-1" id="lastOpp">Last opp</button>
+            <label class="col-md-7" id="Result"></label>
+        </div>
+        <div class="row">
+            <div class="col-md-12 progress" hidden>
+                <div class="progress-bar progress-bar-striped active" role="progressbar" style="width:100%">
+                    Uploading...
+                </div>
+            </div>
+        </div>
 
-    <label for="file">Velg fil:</label>
-    <input type="file" id="file"/>
-    <button id="lastOpp">Last opp</button>
-    <label id="Result"></label>
-    <h3>Bilder fra blob</h3>
-    <!--<img src="https://imageprocessordemo.blob.core.windows.net/pictures/WIN_20140427_195606.JPG"/>-->
+        <h3>Bilder fra blob</h3>
+        <div class="row">
+            <button id="getPics">Show Pictures</button>
+        </div>
+        <div id="gallery" class="row">
+
+        </div>
+    </div>
+        <!--<img src="https://imageprocessordemo.blob.core.windows.net/pictures/WIN_20140427_195606.JPG"/>-->
 </body>
 </html>
