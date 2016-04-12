@@ -22,6 +22,7 @@ namespace DAL
         private CloudBlobContainer _container;
         private ImageTestContext _db;
 
+        private List<ImageSize> imageSizes;
         public FileHandler(CloudStorageAccount storageAccount, ImageTestContext context)
         {
             // Retrieve storage account from connection string.
@@ -32,6 +33,15 @@ namespace DAL
             _container = _blobClient.GetContainerReference("pictures");
 
             _db = context;
+
+            imageSizes = new List<ImageSize>
+            {
+                new ImageSize { Size = Sizes.thumb, width = 80 },
+                new ImageSize { Size = Sizes.small, width = 360 },
+                new ImageSize { Size = Sizes.medium, width = 640 },
+                new ImageSize { Size = Sizes.large, width = 1024 }
+            };
+            
         }
         public async Task<bool> savePicture(ICollection<IFormFile> files, string basePath)
         {
@@ -85,10 +95,8 @@ namespace DAL
                         {
                             return false;
                         }
-
                     }
                 }
-                
             }
             return true;
         }
@@ -101,32 +109,55 @@ namespace DAL
                     .Parse(file.ContentDisposition)
                     .FileName
                     .Trim('"');// FileName may return double quotes
-                CloudBlockBlob blockBlob = _container.GetBlockBlobReference(fileName);
-                
+                fileName = Path.GetFileNameWithoutExtension(fileName) + ".jpg"; //Every image gets extension .jpg to simplyfy finding every transformed image
 
+
+                CloudBlockBlob blockBlob = _container.GetBlockBlobReference(Enum.GetName(typeof(Sizes), Sizes.original) + "/" + fileName);
+                blockBlob.Properties.ContentType = "image/jpeg";
+                
                 // Create or overwrite
                 using (var fileStream = file.OpenReadStream())
                 {
                     await blockBlob.UploadFromStreamAsync(fileStream);
-                    
-                }
-
-                try
-                {
-                    _db.Pictures.Add(new Pictures
-                    {
-                        Url = blockBlob.Uri.ToString()
-                    });
-                    _db.SaveChanges();
-                }
-                catch (Exception e)
-                {
 
                 }
+
+
+                //Saves several resized versions to blob container
+                await saveTransformImagesToBlobAsJpeg(file, fileName);
+
+                //Saves image in database
+                _db.Pictures.Add(new Pictures
+                {
+                    Url = fileName
+                });
+                _db.SaveChanges();
+               
             }
         }
 
-        public Picture getPicture(int id)
+        public async Task saveTransformImagesToBlobAsJpeg(IFormFile file, string fileName)
+        {
+
+            foreach (var size in imageSizes)
+            {
+                CloudBlockBlob blockBlob = _container.GetBlockBlobReference(Enum.GetName(typeof(Sizes),size.Size) + "/" + fileName);
+                blockBlob.Properties.ContentType = "image/jpeg";
+
+                using (var inStream = file.OpenReadStream())
+                {
+                    // Create or overwrite
+                    using (var fileStream = await blockBlob.OpenWriteAsync())
+                    {
+                        var image = new Image(inStream);
+
+                        image.Resize(size.width, 0) // Passing zero on height or width will perserve the aspect ratio of the image.
+                        .Save(fileStream, new JpegFormat());
+                    }
+                }
+            }
+        }
+        public Picture getPicture(int id, Sizes size)
         {
             var pic =  _db.Pictures.SingleOrDefault(p => p.Id == id);
             if(pic == null)
@@ -135,15 +166,42 @@ namespace DAL
             }
             else
             {
+                CloudBlockBlob blockBlob = _container.GetBlockBlobReference(Enum.GetName(typeof(Sizes), size) + "/" + pic.Url);
+                
                 return new Picture
                 {
                     id = pic.Id,
                     description = pic.Description,
-                    url = pic.Url
+                    url = blockBlob.Uri.AbsoluteUri
                 };
             }
         }
-    }
 
-    
+        public List<Picture> getPictures()
+        {
+            var list = _db.Pictures.Select(p => new Picture
+            {
+                id = p.Id,
+                description = p.Description,
+                url = p.Url
+            }).ToList();
+
+            List<Picture> fullList = new List<Picture>();
+            
+            foreach(var pic in list)
+            {
+                foreach (var size in Enum.GetNames(typeof(Sizes)))
+                {
+                    CloudBlockBlob blockBlob = _container.GetBlockBlobReference(size + "/" + pic.url);
+                    fullList.Add(new Picture
+                    {
+                        id = pic.id,
+                        description = pic.description,
+                        url = blockBlob.Uri.AbsoluteUri
+                    });
+                }
+            }
+            return fullList;
+        }
+    }
 }

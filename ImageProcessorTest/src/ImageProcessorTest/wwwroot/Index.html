@@ -52,7 +52,7 @@
             $.getJSON("./api/Picture", function (data) {
                 $("#gallery").text("");
                 $.each(data, function (key, val) {
-                    $("#gallery").append("<div class='col-md-3'><img class='img-responsive' src='" + val.url + "'/><div>");
+                    $("#gallery").append("<div><img src='" + val.url + "'/><div>");
                 });
 
             });

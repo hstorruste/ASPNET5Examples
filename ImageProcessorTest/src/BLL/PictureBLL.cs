@@ -42,7 +42,10 @@ namespace BLL
 
         public List<Picture> getPictures()
         {
-            return _pictureRepo.getPictures();
+            //return _pictureRepo.getPictures();
+
+            
+            return _fileHandler.getPictures();
         }
 
         public Picture updatePicture(Picture picture)
