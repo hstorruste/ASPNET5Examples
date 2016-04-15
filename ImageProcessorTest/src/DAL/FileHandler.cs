@@ -105,14 +105,17 @@ namespace DAL
         {
             foreach (var file in files)
             {
-                var fileName = ContentDispositionHeaderValue
-                    .Parse(file.ContentDisposition)
-                    .FileName
-                    .Trim('"');// FileName may return double quotes
-                fileName = Path.GetFileNameWithoutExtension(fileName) + ".jpg"; //Every image gets extension .jpg to simplyfy finding every transformed image
+                //var fileName = ContentDispositionHeaderValue
+                //    .Parse(file.ContentDisposition)
+                //    .FileName
+                //    .Trim('"');// FileName may return double quotes
+                //fileName = Path.GetFileNameWithoutExtension(fileName) + ".jpg"; //Every image gets extension .jpg to simplify finding every transformed image
 
+                //Create filename
+                //Every image gets extension .jpg to simplyfy finding every transformed image
+                var filename = "pic_" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName()) + ".jpg";
 
-                CloudBlockBlob blockBlob = _container.GetBlockBlobReference(Enum.GetName(typeof(Sizes), Sizes.original) + "/" + fileName);
+                CloudBlockBlob blockBlob = _container.GetBlockBlobReference(Enum.GetName(typeof(Sizes), Sizes.original) + "/" + filename);
                 blockBlob.Properties.ContentType = "image/jpeg";
                 
                 // Create or overwrite
@@ -124,12 +127,12 @@ namespace DAL
 
 
                 //Saves several resized versions to blob container
-                await saveTransformImagesToBlobAsJpeg(file, fileName);
+                await saveTransformImagesToBlobAsJpeg(file, filename);
 
                 //Saves image in database
                 _db.Pictures.Add(new Pictures
                 {
-                    Url = fileName
+                    Url = filename
                 });
                 _db.SaveChanges();
                

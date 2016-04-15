@@ -21,18 +21,24 @@
         function uploadPicture(event) {
             $(".progress").show();
 
-            var formData = new FormData();
+            var data = new FormData();
             $.each(files, function (key, value) {
-                    formData.append('value', value);
+                    data.append('value', value);
             });
-            
+
+            data.append('id', 1);
+            data.append('url', 'Fest.jpg');
+            data.append('description', 'Dette er bare en test!');
+
             $.ajax({
                 url: './api/Picture/Picture',
                 type: 'POST',
-                data: formData,
+                data: data,
+                cache: false,
                 processData: false,
                 contentType: false,
                 success: function (data) {
+                    console.log(data);
                     console.log("Suksess");
                     $('#file').val("");
                     $('#Result').css('color', 'black');

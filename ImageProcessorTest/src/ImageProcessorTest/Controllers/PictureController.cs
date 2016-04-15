@@ -46,10 +46,10 @@ namespace ImageProcessorTest.Controllers
 
         // POST api/values
         [HttpPost("Picture")]
-        public async Task<IActionResult> PicturePost(ICollection<IFormFile> value) {
+        public async Task<IActionResult> PicturePost(PictureMediaModel value){
 
             try {
-                await _pictureRepo.uploadPicture(value, _hostingEnvironment.ApplicationBasePath);
+                await _pictureRepo.uploadPicture(value.value, _hostingEnvironment.ApplicationBasePath);
             }
             catch(Exception e)
             {
