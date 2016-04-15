@@ -31,6 +31,7 @@ namespace DAL
             _blobClient = _storageAccount.CreateCloudBlobClient();
             // Retrieve reference to a previously created container.
             _container = _blobClient.GetContainerReference("pictures");
+            _container.CreateIfNotExistsAsync();
 
             _db = context;
 
