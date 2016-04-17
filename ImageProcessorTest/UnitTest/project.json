@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "description": "UnitTest Class Library",
   "authors": [ "Hallbjørn" ],
@@ -17,7 +17,8 @@
     "ImageProcessorTest": "1.0.0-*",
     "DAL": "1.0.0-*",
     "BLL": "1.0.0-*",
-    "Model": "1.0.0-*"
+    "Model": "1.0.0-*",
+    "Microsoft.AspNet.TestHost": "1.0.0-rc1-final"
   },
 
   "frameworks": {

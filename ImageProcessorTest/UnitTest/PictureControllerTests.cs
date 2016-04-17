@@ -8,18 +8,26 @@ using UnitTest.Stubs;
 using BLL;
 using DAL;
 using Model;
+using ImageProcessorTest;
 using System.Collections;
 using Microsoft.Extensions.PlatformAbstractions;
+using System.Net.Http;
+using Microsoft.AspNet.TestHost;
 
 namespace UnitTest
 {
     public class PictureControllerTest
     {
-        PictureController controller;
+        private readonly TestServer _server;
+        private readonly HttpClient _client;
 
-        public PictureControllerTest(IApplicationEnvironment hostingEnvironment)
+        public PictureControllerTest()
         {
-            controller = new PictureController(new PictureBLL(new DbPictureStub()), hostingEnvironment);
+            // Arrange
+            _server = new TestServer(TestServer.CreateBuilder()
+                .UseStartup<Startup>());
+            _client = _server.CreateClient();
+            _client.BaseAddress = new Uri("https://localhost:44371/api/Picture/");
         }
         [Fact]
         public void Get_Pictures_Ok()
@@ -42,11 +50,11 @@ namespace UnitTest
             };
 
             //Act
-            var result = controller.Get();
+            var result = _client.GetAsync("");
 
             //Assert
             //Assert.Equal(expected: expected, actual: result, comparer: new PictureListComparer());
-            Assert.Equal(expected[0].id, result[0].id);
+            Assert.Contains("1", result.Status.ToString());
 
         }
     }
